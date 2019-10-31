@@ -1,31 +1,27 @@
+plugins {
+    id 'application'
+}
 description = "Wires the application together."
 
-// configure spring boot with gradle: start
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springboot_version}")
-    }
-}
-apply plugin: 'spring-boot'
-// configure spring boot with gradle: end
+mainClassName = 'com.clean.example.Application'
+//distDir = project(":application").getBuildDir().toPath().resolve("distributions").toFile()
 
-// generate the main application jar in the "application" folder, to make it easier to find
-jar {
-    archiveName = "clean-architecture-example.jar"
-    destinationDir = project(":application").getBuildDir()
-}
 
 dependencies {
     compile project(":application:core")
     compile project(":application:dataproviders")
     compile project(":application:entrypoints")
+    compile group: 'com.h2database', name: 'h2', version: '1.4.200'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.2.0.RELEASE'
 
-    compile libs.spring_boot
-    compile libs.database_initialisation
-    compile libs.log
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.5.2'
 
-    testCompile libs.unit_tests
+}
+
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }

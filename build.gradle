@@ -66,14 +66,15 @@ subprojects {
                     "org.slf4j:slf4j-api:1.7.19"
             ]
     ]
+
 }
 
 // apply java plugin to all modules
 configure(allprojects - project(":application")) {
     apply plugin: "java"
     sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "2.11"
+    dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.10'
+        annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    }
 }
